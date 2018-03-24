@@ -11,10 +11,10 @@ pkgdesc="A custom version of dwm modified for my purposes."
 arch=('i686' 'x86_64')
 url="https://dwm.suckless.org/"
 license=('MIT/X Consortium license'/)
-groups=()
 depends=('libx11' 'libxinerama' 'libxft' 'freetype2' 'st' 'dmenu')
-provides=("dwm")
-install=
+provides=('dwm')
+conflicts=('dwm')
+epoch=1
 source=("config.def.h"
 	"config.mk"
 	"drw.c"
@@ -42,10 +42,10 @@ check() {
 }
 
 package() {
-	make DESTDIR="$pkgdir/" install
-	install -m644 -D $srcdir/LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
-	install -m644 -D $srcdir/README $pkgdir/usr/share/doc/$pkgname/README
-	install -m644 -D $srcdir/dwm.desktop $pkgdir/usr/share/xsessions/dwm.desktop
+	make PREFIX=/usr DESTDIR="$pkgdir/" install
+	install -m644 -D $srcdir/LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+	install -m644 -D $srcdir/README "$pkgdir/usr/share/doc/$pkgname/README"
+	install -m644 -D $srcdir/dwm.desktop "$pkgdir/usr/share/xsessions/dwm.desktop"
 }
 
 md5sums=('3e0e53c181f5c536cc88c5a7cc552e87'
