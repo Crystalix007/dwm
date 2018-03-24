@@ -1,0 +1,4 @@
+src/
+pkg/
+config.h
+dwm-*.pkg.tar.xz
