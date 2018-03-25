@@ -65,15 +65,18 @@ static const char *termcmd[]  = { "konsole", NULL };
 
 //Modify "Master" to be whichever interface has capability 'pvolume' when running `amixer`
 static const char *volupactioncmd[]  = { "amixer", "set", "Master", "1%+", NULL };
+static const char *voldownactioncmd[]  = { "amixer", "set", "Master", "1%-", NULL };
 
 //Current volume notification
 static const char *volnotifycmd[] = { "zsh", "-c", "notify-send --expire-time 1000 `amixer get Master | sed -ne \'/Front Left/s/.*\\[\\(.*\\)%\\].*/\\1% volume/p\'`", NULL };
 
 static const Arg volupcmd[] = { { .v = volupactioncmd }, { .v = volnotifycmd }, { .v = NULL } };
+static const Arg voldowncmd[] = { { .v = voldownactioncmd }, { .v = volnotifycmd }, { .v = NULL } };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ 0,				XF86XK_AudioRaiseVolume, spawns, { .v = volupcmd } },
+	{ 0,				XF86XK_AudioLowerVolume, spawns, { .v = voldowncmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
