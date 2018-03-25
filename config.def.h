@@ -68,7 +68,7 @@ static const char *volupactioncmd[]  = { "amixer", "set", "Master", "1%+", NULL 
 static const char *voldownactioncmd[]  = { "amixer", "set", "Master", "1%-", NULL };
 
 //Current volume notification
-static const char *volnotifycmd[] = { "zsh", "-c", "notify-send --expire-time 1000 `amixer get Master | sed -ne \'/Front Left/s/.*\\[\\(.*\\)%\\].*/\\1% volume/p\'`", NULL };
+static const char *volnotifycmd[] = { "bash", "-c", "~/script/notify-send.sh --replace-file=/tmp/volumenotification --expire-time 1000 `amixer get Master | sed -ne \'/Front Left/s/.*\\[\\(.*\\)%\\].*/\\1% volume/p\'`", NULL };
 
 static const Arg volupcmd[] = { { .v = volupactioncmd }, { .v = volnotifycmd }, { .v = NULL } };
 static const Arg voldowncmd[] = { { .v = voldownactioncmd }, { .v = volnotifycmd }, { .v = NULL } };
