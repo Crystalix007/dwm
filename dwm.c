@@ -1648,7 +1648,17 @@ void
 spawn(const Arg *arg)
 {
 	if (arg->v == dmenucmd)
+	{
 		dmenumon[0] = '0' + selmon->num;
+		fprintf(stderr, "Monitor %d\n", selmon->num);
+	}
+
+	fprintf(stderr, "Command \'");
+
+	for (int i = 0; ((char**)arg->v)[i] != NULL; i++)
+		fprintf(stderr, "%s ", ((char**)arg->v)[i]);
+
+	fprintf(stderr, "\'run\n");
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
