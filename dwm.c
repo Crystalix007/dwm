@@ -261,8 +261,17 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[PropertyNotify] = propertynotify,
 	[UnmapNotify] = unmapnotify
 };
+
+enum ReturnCodes
+{
+	Quit = EXIT_SUCCESS,
+	Restart = 1,
+	Fail = EXIT_FAILURE
+};
+
 static Atom wmatom[WMLast], netatom[NetLast];
 static int running = 1;
+static int returnCode = Quit;
 static Cur *cursor[CurLast];
 static Clr **scheme;
 static Display *dpy;
@@ -1251,6 +1260,9 @@ void
 quit(const Arg *arg)
 {
 	running = 0;
+
+	if (arg)
+		returnCode = arg->i;
 }
 
 Monitor *
@@ -2006,7 +2018,7 @@ void
 updatestatus(void)
 {
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
-		strcpy(stext, "dwm-"VERSION);
+		strcpy(stext, "wm");
 	drawbar(selmon);
 }
 
@@ -2160,5 +2172,5 @@ main(int argc, char *argv[])
 	run();
 	cleanup();
 	XCloseDisplay(dpy);
-	return EXIT_SUCCESS;
+	return returnCode;
 }
