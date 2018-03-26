@@ -3,7 +3,7 @@
 # NOTE: Please fill out the license field for your package! If it is unknown,
 # then please put 'unknown'.
 
-# Maintainer: Your Name <youremail@domain.com>
+# Maintainer: Michael Kuc <michaelkuc6@gmail.com>
 pkgname=dwm
 pkgver=6.1
 pkgrel=1
@@ -27,10 +27,12 @@ source=("config.def.h"
 	"util.h"
 	"LICENSE"
 	"README"
-	"dwm.desktop")
+	"dwm.template.desktop")
 
 prepare() {
-	: #Do nothing
+	cp $srcdir/dwm.template.desktop $srcdir/dwm.desktop
+	diresc=$(echo $HOME | sed 's_/_\\/_g')
+	sed -i -- "s/\~/$(echo $diresc)/g" $srcdir/dwm.desktop
 }
 
 build() {

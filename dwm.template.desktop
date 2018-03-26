@@ -2,6 +2,6 @@
 Encoding=UTF-8
 Name=dwm
 Comment=Custom dynamic window manager
-Exec=/home/michaelkuc6/.dwm_restart.zsh
+Exec=~/.config/dwm/dwm-restart.zsh
 Icon=dwm
 Type=XSession
