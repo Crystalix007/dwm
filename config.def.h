@@ -32,6 +32,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "cantata",  NULL,       NULL,       1 << 1,       0,           -1 },
 };
 
 /* layout(s) */
@@ -58,9 +59,9 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-// static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *dmenucmd[] = { "rofi", "-show", "run", "-monitor ", dmenumon, "-matching", "regex", "-font", dmenufont, NULL};
+static char launchermon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+// static const char *launchercmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *launchercmd[] = { "rofi", "-show", "run", "-monitor ", launchermon, "-matching", "regex", "-font", dmenufont, NULL};
 static const char *termcmd[]  = { "konsole", NULL };
 
 //Modify "Master" to be whichever interface has capability 'pvolume' when running `amixer`
@@ -77,7 +78,7 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ 0,				XF86XK_AudioRaiseVolume, spawns, { .v = volupcmd } },
 	{ 0,				XF86XK_AudioLowerVolume, spawns, { .v = voldowncmd } },
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = launchercmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
