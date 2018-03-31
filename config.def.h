@@ -67,17 +67,39 @@ static const char *termcmd[]  = { "konsole", NULL };
 //Modify "Master" to be whichever interface has capability 'pvolume' when running `amixer`
 static const char *volupactioncmd[]  = { "amixer", "set", "Master", "1%+", NULL };
 static const char *voldownactioncmd[]  = { "amixer", "set", "Master", "1%-", NULL };
+static const char *audiomuteactioncmd[] = { "amixer", "set", "Master", "toggle", NULL };
 
 //Current volume notification
 static const char *volnotifycmd[] = { "bash", "-c", "~/script/notify-send.sh --replace-file=/tmp/volumenotification --expire-time 1000 `amixer get Master | sed -ne \'/Front Left/s/.*\\[\\(.*\\)%\\].*/\\1% volume/p\'`", NULL };
 
+static const char *audiomutenotifycmd[] = { "bash", "-c", "~/script/notify-send.sh --replace-file=/tmp/mutenotification --expire-time 1000 \"`amixer get Master | sed -E -ne \'/Front Left/s/.*\\[([^0-9].*)\\].*/Audio output \\1/p\'`\"", NULL };
+//static const char *audiomutenotifycmd[] = { "bash", "-c", "echo \"~/script/notify-send.sh --replace-file=/tmp/mutenotification --expire-time 1000 \'`amixer get Master | sed -E -ne \'/Front Left/s/.*\\[([^0-9].*)\\].*/Audio output \\1/p\'`\'\" >> ~/Mute.log", NULL };
+
+//Will end up pausing and resuming all music clients currently open
+static const char *mediatogglecmd[] = { "bash", "-c", "for i in $(qdbus org.mpris.MediaPlayer2.*); do qdbus $i /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause; done", NULL };
+
+//Will stop all music clients entirely
+static const char *mediastopcmd[] = { "bash", "-c", "for i in $(qdbus org.mpris.MediaPlayer2.*); do qdbus $i /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop; done", NULL };
+
+//Will go forward a track in all music clients
+static const char *medianextcmd[] = { "bash", "-c", "for i in $(qdbus org.mpris.MediaPlayer2.*); do qdbus $i /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next; done", NULL };
+
+//Will go backward a track in all music clients
+static const char *mediaprevcmd[] = { "bash", "-c", "for i in $(qdbus org.mpris.MediaPlayer2.*); do qdbus $i /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous; done", NULL };
+
 static const Arg volupcmd[] = { { .v = volupactioncmd }, { .v = volnotifycmd }, { .v = NULL } };
 static const Arg voldowncmd[] = { { .v = voldownactioncmd }, { .v = volnotifycmd }, { .v = NULL } };
+static const Arg audiomutecmd[] = { { .v = audiomuteactioncmd }, { .v = audiomutenotifycmd }, { .v = NULL } };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ 0,				XF86XK_AudioRaiseVolume, spawns, { .v = volupcmd } },
 	{ 0,				XF86XK_AudioLowerVolume, spawns, { .v = voldowncmd } },
+	{ 0,				XF86XK_AudioMute, spawns, { .v = audiomutecmd } },
+	{ 0,				XF86XK_AudioPlay, spawn,  {.v = mediatogglecmd } },
+	{ 0,				XF86XK_AudioStop, spawn,  {.v = mediastopcmd } },
+	{ 0,				XF86XK_AudioNext, spawn,  {.v = medianextcmd } },
+	{ 0,				XF86XK_AudioPrev, spawn,  {.v = mediaprevcmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = launchercmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
