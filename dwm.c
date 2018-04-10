@@ -265,8 +265,8 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 enum ReturnCodes
 {
 	Quit = EXIT_SUCCESS,
-	Restart = 1,
-	Fail = EXIT_FAILURE
+	Fail = EXIT_FAILURE,
+	Restart = 2
 };
 
 static Atom wmatom[WMLast], netatom[NetLast];
@@ -2180,6 +2180,7 @@ main(int argc, char *argv[])
 	scan();
 	runAutostart();
 	run();
+	fprintf(stderr, "dwm quitting with return code %d", returnCode);
 	cleanup();
 	XCloseDisplay(dpy);
 	return returnCode;
